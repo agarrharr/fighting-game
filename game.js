@@ -1,12 +1,19 @@
 var game = function() {
+	var player1 = {
+		location: 1
+	};
 	
 	var board = function() {
 			
 	}();
 
+	var playTurn = function(player, cards) {
+		player1.location = 6;
+	};
+
 	var getPlayerLocations = function() {
 		return {
-			player1: 1,
+			player1: player1.location,
 			player2: 15
 		};
 	};
@@ -38,6 +45,7 @@ var game = function() {
 		getPlayerCards: getPlayerCards,
 		getDeck: getDeck,
 		getDiscardPile: getDiscardPile,
-		getRoundsWon: getRoundsWon
+		getRoundsWon: getRoundsWon,
+		playTurn: playTurn
 	};
 }();
