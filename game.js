@@ -11,7 +11,33 @@ var game = function() {
 		};
 	};
 
+	var getPlayerCards = function() {
+		return {
+			player1: [1,1,1,1,1],
+			player2: [1,1,1,1,1]
+		};
+	};
+
+	var getDeck = function() {
+		return [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5];
+	};
+
+	var getDiscardPile = function() {
+		return [];
+	};
+
+	var getRoundsWon = function() {
+		return {
+			player1: 0,
+			player2: 0
+		};
+	};
+
 	return {
-		getPlayerLocations: getPlayerLocations
+		getPlayerLocations: getPlayerLocations,
+		getPlayerCards: getPlayerCards,
+		getDeck: getDeck,
+		getDiscardPile: getDiscardPile,
+		getRoundsWon: getRoundsWon
 	};
 }();
