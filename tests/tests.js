@@ -8,3 +8,8 @@ test( "Game start", function() {
 	equal(game.getRoundsWon().player1, 0);
 	equal(game.getRoundsWon().player2, 0);
 });
+
+test( "First move", function() {
+	game.playTurn(1, [5]);
+	equal(game.getPlayerLocations().player1, 6);
+});
