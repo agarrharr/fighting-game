@@ -7,6 +7,16 @@ var game = function() {
 			
 	}();
 
+	var setupGame = function(config) {
+		if (config === undefined) {
+			return;
+		}
+
+		if (config.player1)	{
+			player1.location = config.player1.location || 1;	
+		}
+	};
+
 	var playTurn = function(player, cards) {
 		player1.location = 6;
 	};
@@ -26,7 +36,7 @@ var game = function() {
 	};
 
 	var getDeck = function() {
-		return [1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5];
+		return [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5];
 	};
 
 	var getDiscardPile = function() {
@@ -46,6 +56,7 @@ var game = function() {
 		getDeck: getDeck,
 		getDiscardPile: getDiscardPile,
 		getRoundsWon: getRoundsWon,
-		playTurn: playTurn
+		playTurn: playTurn,
+		setupGame: setupGame
 	};
 }();
