@@ -44,7 +44,11 @@ var game = function() {
 	};
 
 	var playTurn = function(player, cards) {
-		player1.location = 6;
+		if (player === 1) {
+			player1.location += cards[0];
+		} else {
+			player2.location -= cards[0];
+		}
 	};
 
 	var getPlayerLocations = function() {
