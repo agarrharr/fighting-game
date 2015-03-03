@@ -2,7 +2,13 @@ var game = function() {
 	var player1 = {};
 	
 	var player2 = {};
-
+	
+	var deck = [1,1,1,1,1,
+				2,2,2,2,2,
+				3,3,3,3,3,
+				4,4,4,4,4,
+				5,5,5,5,5];
+	
 	var board = function() {
 			
 	}();
@@ -11,12 +17,14 @@ var game = function() {
 		if (config === undefined) {
 			player1 = {
 				location: 1,
-				cards: getRandomCard(5)
+				cards: getRandomCard(5),
+				roundsWon: 0
 			};
 			
 			player2 = {
 				location: 15,
-				cards: getRandomCard(5)
+				cards: getRandomCard(5),
+				roundsWon: 0
 			};
 
 			return;
@@ -25,11 +33,13 @@ var game = function() {
 		if (config.player1)	{
 			player1.location = config.player1.location || 1;	
 			player1.cards = config.player1.cards;
+			player1.roundsWon = config.player1.roundsWon || 0;
 		}
 
 		if (config.player2) {
 			player2.location = config.player2.location || 15;
 			player2.cards = config.player2.cards;
+			player2.roundsWon = config.player2.roundsWon || 0;
 		}
 	};
 
@@ -52,18 +62,22 @@ var game = function() {
 	};
 
 	var getDeck = function() {
-		return [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5];
+		return deck;
 	};
 
 	var getRoundsWon = function() {
 		return {
-			player1: 0,
-			player2: 0
+			player1: player1.roundsWon,
+			player2: player2.roundsWon
 		};
 	};
 
 	var getRandomCard = function(numberOfCards) {
-		return [1,1,1,1,1];
+		var cards = [];
+		for (var i = 0; i < numberOfCards; i += 1) {
+			cards.push(deck.pop());
+		}
+		return cards;
 	};
 
 	return {

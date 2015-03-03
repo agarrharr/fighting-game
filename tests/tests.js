@@ -27,13 +27,20 @@ test("setupGame works", function() {
 	equal(game.getPlayerLocations().player2, 10);
 	deepEqual(game.getPlayerCards().player1, [1,2,2,3,5]);
 	deepEqual(game.getPlayerCards().player2, [1,2,2,3]);
-	equal(game.getDeck().length, 13);
 	equal(game.getRoundsWon().player1, 1);
 	equal(game.getRoundsWon().player2, 2);
 });
 
-// test( "First move", function() {
-// 	game.playTurn(1, [5]);
-// 	equal(game.getPlayerLocations().player1, 6);
-// });
+test( "First move", function() {
+	game.setupGame();
+	game.playTurn(1, [5]);
+	equal(game.getPlayerLocations().player1, 6);
+});
 
+test( "Play two moves", function() {
+	game.setupGame();
+	game.playTurn(1, [5]);
+	game.playTurn(2, [5]);
+	equal(game.getPlayerLocations().player1, 6);
+	equal(game.getPlayerLocations().player2, 10);
+});
