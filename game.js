@@ -1,19 +1,31 @@
 var game = function() {
-	var player1 = {
-		location: 1
-	};
+	var player1 = {};
 	
+	var player2 = {};
+
 	var board = function() {
 			
 	}();
 
 	var setupGame = function(config) {
 		if (config === undefined) {
+			player1 = {
+				location: 1
+			};
+			
+			player2 = {
+				location: 15
+			};
+
 			return;
 		}
 
 		if (config.player1)	{
 			player1.location = config.player1.location || 1;	
+		}
+
+		if (config.player2) {
+			player2.location = config.player2.location || 15;
 		}
 	};
 
@@ -24,7 +36,7 @@ var game = function() {
 	var getPlayerLocations = function() {
 		return {
 			player1: player1.location,
-			player2: 15
+			player2: player2.location
 		};
 	};
 
