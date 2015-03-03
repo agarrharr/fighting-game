@@ -10,11 +10,13 @@ var game = function() {
 	var setupGame = function(config) {
 		if (config === undefined) {
 			player1 = {
-				location: 1
+				location: 1,
+				cards: getRandomCard(5)
 			};
 			
 			player2 = {
-				location: 15
+				location: 15,
+				cards: getRandomCard(5)
 			};
 
 			return;
@@ -22,10 +24,12 @@ var game = function() {
 
 		if (config.player1)	{
 			player1.location = config.player1.location || 1;	
+			player1.cards = config.player1.cards;
 		}
 
 		if (config.player2) {
 			player2.location = config.player2.location || 15;
+			player2.cards = config.player2.cards;
 		}
 	};
 
@@ -42,8 +46,8 @@ var game = function() {
 
 	var getPlayerCards = function() {
 		return {
-			player1: [1,1,1,1,1],
-			player2: [1,1,1,1,1]
+			player1: player1.cards,
+			player2: player2.cards
 		};
 	};
 
@@ -61,6 +65,10 @@ var game = function() {
 			player2: 0
 		};
 	};
+
+	var getRandomCard = function(numberOfCards) {
+		return [1,1,1,1,1];
+	}
 
 	return {
 		getPlayerLocations: getPlayerLocations,
