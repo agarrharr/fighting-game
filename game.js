@@ -1,4 +1,4 @@
-define([], function() {
+var game = function() {
 	var player1 = {
 		location: 1
 	};
@@ -59,4 +59,4 @@ define([], function() {
 		playTurn: playTurn,
 		setupGame: setupGame
 	};
-});
+}();
