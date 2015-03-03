@@ -1,7 +1,5 @@
 var game = function() {
-	var player1 = {};
-	
-	var player2 = {};
+	var players = [{},{}];
 	
 	var deck = [1,1,1,1,1,
 				2,2,2,2,2,
@@ -15,13 +13,13 @@ var game = function() {
 
 	var setupGame = function(config) {
 		if (config === undefined) {
-			player1 = {
+			players[0] = {
 				location: 1,
 				cards: getRandomCard(5),
 				roundsWon: 0
 			};
 			
-			player2 = {
+			players[1] = {
 				location: 15,
 				cards: getRandomCard(5),
 				roundsWon: 0
@@ -31,37 +29,37 @@ var game = function() {
 		}
 
 		if (config.player1)	{
-			player1.location = config.player1.location || 1;	
-			player1.cards = config.player1.cards;
-			player1.roundsWon = config.player1.roundsWon || 0;
+			players[0].location = config.player1.location || 1;	
+			players[0].cards = config.player1.cards;
+			players[0].roundsWon = config.player1.roundsWon || 0;
 		}
 
 		if (config.player2) {
-			player2.location = config.player2.location || 15;
-			player2.cards = config.player2.cards;
-			player2.roundsWon = config.player2.roundsWon || 0;
+			players[1].location = config.player2.location || 15;
+			players[1].cards = config.player2.cards;
+			players[1].roundsWon = config.player2.roundsWon || 0;
 		}
 	};
 
 	var playTurn = function(player, cards) {
-		if (player === 1) {
-			player1.location += cards[0];
+		if (player === 0) {
+			players[player].location += cards[0];
 		} else {
-			player2.location -= cards[0];
+			players[player].location -= cards[0];
 		}
 	};
 
 	var getPlayerLocations = function() {
 		return {
-			player1: player1.location,
-			player2: player2.location
+			player1: players[0].location,
+			player2: players[1].location
 		};
 	};
 
 	var getPlayerCards = function() {
 		return {
-			player1: player1.cards,
-			player2: player2.cards
+			player1: players[0].cards,
+			player2: players[1].cards
 		};
 	};
 
@@ -71,8 +69,8 @@ var game = function() {
 
 	var getRoundsWon = function() {
 		return {
-			player1: player1.roundsWon,
-			player2: player2.roundsWon
+			player1: players[0].roundsWon,
+			player2: players[1].roundsWon
 		};
 	};
 

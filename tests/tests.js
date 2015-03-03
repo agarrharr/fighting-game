@@ -33,14 +33,27 @@ test("setupGame works", function() {
 
 test( "First move", function() {
 	game.setupGame();
-	game.playTurn(1, [5]);
+	game.playTurn(0, [5]);
 	equal(game.getPlayerLocations().player1, 6);
 });
 
 test( "Play two moves", function() {
 	game.setupGame();
+	game.playTurn(0, [5]);
 	game.playTurn(1, [5]);
-	game.playTurn(2, [5]);
 	equal(game.getPlayerLocations().player1, 6);
 	equal(game.getPlayerLocations().player2, 10);
 });
+
+// test("Attack!", function() {
+// 	game.setupGame({
+// 		player1: {
+// 			location: 1
+// 		},
+// 		player2: {
+// 			location: 6
+// 		}
+// 	});
+// 	game.playTurn(0, [5]);
+// 	equal(game.getPlayerLocations().player1, 1);
+// });
