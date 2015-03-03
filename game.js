@@ -55,10 +55,6 @@ var game = function() {
 		return [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5];
 	};
 
-	var getDiscardPile = function() {
-		return [];
-	};
-
 	var getRoundsWon = function() {
 		return {
 			player1: 0,
@@ -68,13 +64,12 @@ var game = function() {
 
 	var getRandomCard = function(numberOfCards) {
 		return [1,1,1,1,1];
-	}
+	};
 
 	return {
 		getPlayerLocations: getPlayerLocations,
 		getPlayerCards: getPlayerCards,
 		getDeck: getDeck,
-		getDiscardPile: getDiscardPile,
 		getRoundsWon: getRoundsWon,
 		playTurn: playTurn,
 		setupGame: setupGame

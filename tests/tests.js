@@ -5,7 +5,6 @@ test( "Game start", function() {
 	equal(game.getPlayerCards().player1.length, 5);
 	equal(game.getPlayerCards().player2.length, 5);
 	equal(game.getDeck().length, 15);
-	equal(game.getDiscardPile().length, 0);
 	equal(game.getRoundsWon().player1, 0);
 	equal(game.getRoundsWon().player2, 0);
 });
@@ -21,8 +20,7 @@ test("setupGame works", function() {
 			location: 10,
 			cards: [1,2,2,3],
 			roundsWon: 2
-		},
-		discardPile: [5,4]
+		}
 	});
 
 	equal(game.getPlayerLocations().player1, 5);
@@ -30,7 +28,6 @@ test("setupGame works", function() {
 	deepEqual(game.getPlayerCards().player1, [1,2,2,3,5]);
 	deepEqual(game.getPlayerCards().player2, [1,2,2,3]);
 	equal(game.getDeck().length, 13);
-	deepEqual(game.getDiscardPile(), [5,4]);
 	equal(game.getRoundsWon().player1, 1);
 	equal(game.getRoundsWon().player2, 2);
 });
