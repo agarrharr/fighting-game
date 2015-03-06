@@ -56,5 +56,5 @@ test("Attack!", function() {
 	});
 	game.playTurn(0, [5]);
 	equal(game.getPlayerLocations().player1, 1);
-	equal(game.playerIsAttacked().player2, true);
+	equal(game.getPlayers().player2.isAttacked, true);
 });

@@ -24,14 +24,16 @@ var game = function() {
 				location: 1,
 				cards: getRandomCard(5),
 				roundsWon: 0,
-				direction: 1
+				direction: 1,
+				isAttacked: false
 			};
 			
 			players[1] = {
 				location: 15,
 				cards: getRandomCard(5),
 				roundsWon: 0,
-				direction: -1
+				direction: -1,
+				isAttacked: false
 			};
 
 			return;
@@ -41,12 +43,14 @@ var game = function() {
 			players[0].location = config.player1.location || 1;	
 			players[0].cards = config.player1.cards;
 			players[0].roundsWon = config.player1.roundsWon || 0;
+			players[0].isAttacked = config.player1.isAttacked || false;
 		}
 
 		if (config.player2) {
 			players[1].location = config.player2.location || 15;
 			players[1].cards = config.player2.cards;
 			players[1].roundsWon = config.player2.roundsWon || 0;
+			players[1].isAttacked = config.player2.isAttacked || false;
 		}
 	};
 
@@ -55,6 +59,8 @@ var game = function() {
 		var otherPlayer = ! player ? 1 : 0;
 		if (newLocation !== players[otherPlayer].location) {
 			players[player].location += cards[0] * players[player].direction;
+		} else {
+			players[otherPlayer].isAttacked = true;
 		}
 	};
 
@@ -91,12 +97,20 @@ var game = function() {
 		return cards;
 	};
 
+	var getPlayers = function() {
+		return {
+			player1: players[0],
+			player2: players[1]
+		};
+	};
+
 	return {
 		getPlayerLocations: getPlayerLocations,
 		getPlayerCards: getPlayerCards,
 		getDeck: getDeck,
 		getRoundsWon: getRoundsWon,
 		playTurn: playTurn,
-		setupGame: setupGame
+		setupGame: setupGame,
+		getPlayers: getPlayers
 	};
 }();
