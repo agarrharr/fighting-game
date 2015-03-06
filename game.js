@@ -51,7 +51,11 @@ var game = function() {
 	};
 
 	var playTurn = function(player, cards) {
-		players[player].location += cards[0] * players[player].direction;
+		var newLocation = players[player].location + (cards[0] * players[player].direction);
+		var otherPlayer = ! player ? 1 : 0;
+		if (newLocation !== players[otherPlayer].location) {
+			players[player].location += cards[0] * players[player].direction;
+		}
 	};
 
 	var getPlayerLocations = function() {
