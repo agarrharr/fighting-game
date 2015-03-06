@@ -1,28 +1,37 @@
 var game = function() {
-	var players = [{},{}];
+	var players = [
+			{
+				direction: 1
+			},
+			{
+				direction: -1
+			}
+		];
 	
-	var deck = [1,1,1,1,1,
+	var deck;
+	
+	var board = function() {}();
+
+	var setupGame = function(config) {
+		deck = [1,1,1,1,1,
 				2,2,2,2,2,
 				3,3,3,3,3,
 				4,4,4,4,4,
 				5,5,5,5,5];
-	
-	var board = function() {
-			
-	}();
 
-	var setupGame = function(config) {
 		if (config === undefined) {
 			players[0] = {
 				location: 1,
 				cards: getRandomCard(5),
-				roundsWon: 0
+				roundsWon: 0,
+				direction: 1
 			};
 			
 			players[1] = {
 				location: 15,
 				cards: getRandomCard(5),
-				roundsWon: 0
+				roundsWon: 0,
+				direction: -1
 			};
 
 			return;
@@ -42,11 +51,7 @@ var game = function() {
 	};
 
 	var playTurn = function(player, cards) {
-		if (player === 0) {
-			players[player].location += cards[0];
-		} else {
-			players[player].location -= cards[0];
-		}
+		players[player].location += cards[0] * players[player].direction;
 	};
 
 	var getPlayerLocations = function() {
