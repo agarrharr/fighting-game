@@ -9,6 +9,7 @@ var game = function() {
 		];
 	
 	var deck;
+	var lastPlayedCards = [];
 	
 	var board = function() {}();
 
@@ -39,6 +40,10 @@ var game = function() {
 			return;
 		}
 
+		if (config.lastPlayedCards) {
+			lastPlayedCards = config.lastPlayedCards;
+		}
+
 		if (config.player1)	{
 			players[0].location = config.player1.location || 1;	
 			players[0].cards = config.player1.cards;
@@ -55,6 +60,7 @@ var game = function() {
 	};
 
 	var playTurn = function(player, cards) {
+		lastPlayedCards = cards;
 		var newLocation = players[player].location + (cards[0] * players[player].direction);
 		var otherPlayer = ! player ? 1 : 0;
 		if (newLocation !== players[otherPlayer].location) {
@@ -80,6 +86,10 @@ var game = function() {
 
 	var getDeck = function() {
 		return deck;
+	};
+
+	var getLastPlayedCards = function() {
+		return lastPlayedCards;
 	};
 
 	var getRoundsWon = function() {
@@ -108,6 +118,7 @@ var game = function() {
 		getPlayerLocations: getPlayerLocations,
 		getPlayerCards: getPlayerCards,
 		getDeck: getDeck,
+		getLastPlayedCards: getLastPlayedCards,
 		getRoundsWon: getRoundsWon,
 		playTurn: playTurn,
 		setupGame: setupGame,

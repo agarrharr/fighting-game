@@ -14,13 +14,16 @@ test("setupGame works", function() {
 		player1: {
 			location: 5,
 			cards: [1,2,2,3,5],
-			roundsWon: 1
+			roundsWon: 1,
+			isAttacked: false
 		},
 		player2: {
 			location: 10,
 			cards: [1,2,2,3],
-			roundsWon: 2
-		}
+			roundsWon: 2,
+			isAttacked: true
+		},
+		lastPlayedCards: [5]
 	});
 
 	equal(game.getPlayerLocations().player1, 5);
@@ -29,6 +32,9 @@ test("setupGame works", function() {
 	deepEqual(game.getPlayerCards().player2, [1,2,2,3]);
 	equal(game.getRoundsWon().player1, 1);
 	equal(game.getRoundsWon().player2, 2);
+	equal(game.getPlayers().player1.isAttacked, false);
+	equal(game.getPlayers().player2.isAttacked, true);
+	deepEqual(game.getLastPlayedCards(), [5]);
 });
 
 test( "First move", function() {
@@ -57,4 +63,20 @@ test("Attack!", function() {
 	game.playTurn(0, [5]);
 	equal(game.getPlayerLocations().player1, 1);
 	equal(game.getPlayers().player2.isAttacked, true);
+});
+
+test("Retreat", function() {
+	game.setupGame({
+		player1: {
+			location: 1
+		},
+		player2: {
+			location: 6,
+			isAttacked: true
+		},
+		lastPlayedCards: [5]
+	});
+	game.playTurn(1, [3]);
+	equal(game.getPlayerLocations().player2, 9);
+	equal(game.getPlayers().player2.isAttacked, false);
 });
