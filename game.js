@@ -60,14 +60,23 @@ var game = function() {
 	};
 
 	var playTurn = function(player, cards) {
-		lastPlayedCards = cards;
 		var newLocation = players[player].location + (cards[0] * players[player].direction);
 		var otherPlayer = ! player ? 1 : 0;
-		if (newLocation !== players[otherPlayer].location) {
-			players[player].location += cards[0] * players[player].direction;
+
+		if (players[player].isAttacked) {
+			if (cardsAreTheSame(cards, lastPlayedCards)) {
+			} else {
+				players[player].location += cards[0] * -players[player].direction;
+			}
+			players[player].isAttacked = false;
 		} else {
-			players[otherPlayer].isAttacked = true;
+			if (newLocation !== players[otherPlayer].location) {
+				players[player].location += cards[0] * players[player].direction;
+			} else {
+				players[otherPlayer].isAttacked = true;
+			}
 		}
+		lastPlayedCards = cards;
 	};
 
 	var getPlayerLocations = function() {
@@ -105,6 +114,22 @@ var game = function() {
 			cards.push(deck.pop());
 		}
 		return cards;
+	};
+
+	var cardsAreTheSame = function(cards1, cards2) {
+		if (cards1.length === cards2.length) {
+			for(var i = 0; i < cards1.length; i += 1) {
+				if (cards2[i] === undefined) {
+					return false;
+				}
+				if (cards1[i] !== cards2[i]) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return true;
 	};
 
 	var getPlayers = function() {
