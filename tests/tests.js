@@ -80,3 +80,17 @@ test("Retreat", function() {
 	equal(game.getPlayerLocations().player2, 9);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
+
+test("Running attack!", function() {
+	game.setupGame({
+		player1: {
+			location: 5
+		},
+		player2: {
+			location: 13
+		}
+	});
+	game.playTurn(0, [3, 5]);
+	equal(game.getPlayerLocations().player1, 8);
+	equal(game.getPlayers().player2.isAttacked, true);
+});

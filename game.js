@@ -65,18 +65,39 @@ var game = function() {
 
 		if (players[player].isAttacked) {
 			if (cardsAreTheSame(cards, lastPlayedCards)) {
+				// Do nothing. This is a block
 			} else {
+				// Retreat
 				players[player].location += cards[0] * -players[player].direction;
 			}
 			players[player].isAttacked = false;
 		} else {
-			if (newLocation !== players[otherPlayer].location) {
-				players[player].location += cards[0] * players[player].direction;
-			} else {
+			console.log("newLocation", newLocation);
+			if (newLocation === players[otherPlayer].location) {
+				// Attack
 				players[otherPlayer].isAttacked = true;
+			} else if (isRunningAttack(player, cards)) {
+				players[player].location += cards[0] * players[player].direction;
+				players[otherPlayer].isAttacked = true;
+			} else {
+				// Move
+				players[player].location += cards[0] * players[player].direction;
 			}
 		}
 		lastPlayedCards = cards;
+	};
+
+	var isRunningAttack = function(player, cards) {
+		if (cards.length !== 2) {
+			return false;
+		}
+		var sumOfCards = cards[0] + cards[1];
+		
+		var otherPlayer = ! player ? 1 : 0;
+		var firstLocation = players[player].location + sumOfCards;
+		var secondLocation = players[otherPlayer].location;
+
+		return firstLocation === secondLocation;
 	};
 
 	var getPlayerLocations = function() {
