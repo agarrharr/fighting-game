@@ -72,12 +72,15 @@ var game = function() {
 			}
 			players[player].isAttacked = false;
 		} else {
+			var playersAreNextToEachOther = Math.abs(players[player].location - players[otherPlayer].location) === 1;
 			if (newLocation === players[otherPlayer].location) {
 				// Attack
 				players[otherPlayer].isAttacked = true;
 			} else if (isDashingStrike(player, cards)) {
 				players[player].location += cards[0] * players[player].direction;
 				players[otherPlayer].isAttacked = true;
+			} else if (playersAreNextToEachOther) {
+				players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
 			} else {
 				// Move
 				players[player].location += cards[0] * players[player].direction;
