@@ -81,7 +81,7 @@ test("Retreat", function() {
 	equal(game.getPlayers().player2.isAttacked, false);
 });
 
-test("Running attack!", function() {
+test("Dashing strike!", function() {
 	game.setupGame({
 		player1: {
 			location: 5
@@ -93,4 +93,18 @@ test("Running attack!", function() {
 	game.playTurn(0, [3, 5]);
 	equal(game.getPlayerLocations().player1, 8);
 	equal(game.getPlayers().player2.isAttacked, true);
+});
+
+test("Push", function() {
+	game.setupGame({
+		player1: {
+			location: 5
+		},
+		player2: {
+			location: 6
+		}
+	});
+	game.playTurn(1, [3]);
+	equal(game.getPlayerLocations().player1, 2);
+	equal(game.getPlayers().player1.isAttacked, false);
 });

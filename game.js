@@ -72,11 +72,10 @@ var game = function() {
 			}
 			players[player].isAttacked = false;
 		} else {
-			console.log("newLocation", newLocation);
 			if (newLocation === players[otherPlayer].location) {
 				// Attack
 				players[otherPlayer].isAttacked = true;
-			} else if (isRunningAttack(player, cards)) {
+			} else if (isDashingStrike(player, cards)) {
 				players[player].location += cards[0] * players[player].direction;
 				players[otherPlayer].isAttacked = true;
 			} else {
@@ -87,7 +86,7 @@ var game = function() {
 		lastPlayedCards = cards;
 	};
 
-	var isRunningAttack = function(player, cards) {
+	var isDashingStrike = function(player, cards) {
 		if (cards.length !== 2) {
 			return false;
 		}
