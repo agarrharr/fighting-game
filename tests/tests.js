@@ -45,10 +45,10 @@ test( "First move", function() {
 
 test( "Play two moves", function() {
 	game.setupGame();
-	game.playTurn(0, [5]);
-	game.playTurn(1, [5]);
-	equal(game.getPlayerLocations().player1, 6);
-	equal(game.getPlayerLocations().player2, 10);
+	game.playTurn(0, [1]);
+	game.playTurn(1, [1]);
+	equal(game.getPlayerLocations().player1, 2);
+	equal(game.getPlayerLocations().player2, 14);
 });
 
 test("Attack!", function() {
@@ -109,7 +109,7 @@ test("Push", function() {
 	equal(game.getPlayers().player1.isAttacked, false);
 });
 
-test("Play larger card, but only move up to the other player", function() {
+test("Player 1 plays larger card, but only move up to the other player", function() {
 	game.setupGame({
 		player1: {
 			location: 3
@@ -122,4 +122,19 @@ test("Play larger card, but only move up to the other player", function() {
 	equal(game.getPlayerLocations().player1, 5);
 	equal(game.getPlayerLocations().player2, 6);
 	equal(game.getPlayers().player1.isAttacked, false);
+});
+
+test("Player 2 plays larger card, but only move up to the other player", function() {
+	game.setupGame({
+		player1: {
+			location: 3
+		},
+		player2: {
+			location: 6
+		}
+	});
+	game.playTurn(1, [5]);
+	equal(game.getPlayerLocations().player1, 3);
+	equal(game.getPlayerLocations().player2, 4);
+	equal(game.getPlayers().player2.isAttacked, false);
 });

@@ -81,6 +81,9 @@ var game = function() {
 				players[otherPlayer].isAttacked = true;
 			} else if (playersAreNextToEachOther) {
 				players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
+			} else if ((player === 0 && newLocation > players[otherPlayer].location) ||
+					(player === 2 && newLocation < players[otherPlayer].location)) {
+				players[player].location = players[otherPlayer].location - players[player].direction;
 			} else {
 				// Move
 				players[player].location += cards[0] * players[player].direction;
