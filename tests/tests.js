@@ -138,3 +138,18 @@ test("Player 2 plays larger card, but only move up to the other player", functio
 	equal(game.getPlayerLocations().player2, 4);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
+
+test("Player 1 can't push Player 2 off the board", function() {
+	game.setupGame({
+		player1: {
+			location: 13
+		},
+		player2: {
+			location: 14
+		}
+	});
+	game.playTurn(0, [5]);
+	equal(game.getPlayerLocations().player1, 13);
+	equal(game.getPlayerLocations().player2, 15);
+	equal(game.getPlayers().player2.isAttacked, false);
+});
