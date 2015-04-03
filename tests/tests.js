@@ -153,3 +153,18 @@ test("Player 1 can't push Player 2 off the board", function() {
 	equal(game.getPlayerLocations().player2, 15);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
+
+test("Player 2 can't push Player 1 off the board", function() {
+	game.setupGame({
+		player1: {
+			location: 2
+		},
+		player2: {
+			location: 3
+		}
+	});
+	game.playTurn(1, [5]);
+	equal(game.getPlayerLocations().player1, 1);
+	equal(game.getPlayerLocations().player2, 3);
+	equal(game.getPlayers().player1.isAttacked, false);
+});
