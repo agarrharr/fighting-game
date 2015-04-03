@@ -175,10 +175,11 @@ test("Block", function() {
 			location: 3
 		},
 		player2: {
-			location: 8
-		}
+			location: 8,
+			isAttacked: true
+		},
+		lastPlayedCards: [5]
 	});
-	game.playTurn(0, [5]);
 	game.playTurn(1, [5]);
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 8);
@@ -192,10 +193,11 @@ test("Block with two cards", function() {
 			location: 3
 		},
 		player2: {
-			location: 8
-		}
+			location: 8,
+			isAttacked: true
+		},
+		lastPlayedCards: [5,5]
 	});
-	game.playTurn(0, [5,5]);
 	game.playTurn(1, [5,5]);
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 8);
