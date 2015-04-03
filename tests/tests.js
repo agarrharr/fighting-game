@@ -65,22 +65,6 @@ test("Attack!", function() {
 	equal(game.getPlayers().player2.isAttacked, true);
 });
 
-test("Retreat", function() {
-	game.setupGame({
-		player1: {
-			location: 1
-		},
-		player2: {
-			location: 6,
-			isAttacked: true
-		},
-		lastPlayedCards: [5]
-	});
-	game.playTurn(1, [3]);
-	equal(game.getPlayerLocations().player2, 9);
-	equal(game.getPlayers().player2.isAttacked, false);
-});
-
 test("Dashing strike!", function() {
 	game.setupGame({
 		player1: {
@@ -93,6 +77,22 @@ test("Dashing strike!", function() {
 	game.playTurn(0, [3, 5]);
 	equal(game.getPlayerLocations().player1, 8);
 	equal(game.getPlayers().player2.isAttacked, true);
+});
+
+test("Retreat from dashing strike", function() {
+	game.setupGame({
+		player1: {
+			location: 1
+		},
+		player2: {
+			location: 6,
+			isAttacked: true
+		},
+		lastPlayedCards: [2,3]
+	});
+	game.playTurn(1, [2]);
+	equal(game.getPlayerLocations().player2, 8);
+	equal(game.getPlayers().player2.isAttacked, false);
 });
 
 test("Push", function() {
@@ -204,3 +204,7 @@ test("Block with two cards", function() {
 	equal(game.getPlayers().player1.isAttacked, false);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
+
+// Test a block on a dashing strike
+// Test no being able to block a normal attack
+// Test that you can't retreat past the end of the board
