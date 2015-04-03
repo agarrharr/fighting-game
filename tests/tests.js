@@ -168,3 +168,37 @@ test("Player 2 can't push Player 1 off the board", function() {
 	equal(game.getPlayerLocations().player2, 3);
 	equal(game.getPlayers().player1.isAttacked, false);
 });
+
+test("Block", function() {
+	game.setupGame({
+		player1: {
+			location: 3
+		},
+		player2: {
+			location: 8
+		}
+	});
+	game.playTurn(0, [5]);
+	game.playTurn(1, [5]);
+	equal(game.getPlayerLocations().player1, 3);
+	equal(game.getPlayerLocations().player2, 8);
+	equal(game.getPlayers().player1.isAttacked, false);
+	equal(game.getPlayers().player2.isAttacked, false);
+});
+
+test("Block with two cards", function() {
+	game.setupGame({
+		player1: {
+			location: 3
+		},
+		player2: {
+			location: 8
+		}
+	});
+	game.playTurn(0, [5,5]);
+	game.playTurn(1, [5,5]);
+	equal(game.getPlayerLocations().player1, 3);
+	equal(game.getPlayerLocations().player2, 8);
+	equal(game.getPlayers().player1.isAttacked, false);
+	equal(game.getPlayers().player2.isAttacked, false);
+});
