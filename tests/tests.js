@@ -108,3 +108,18 @@ test("Push", function() {
 	equal(game.getPlayerLocations().player1, 2);
 	equal(game.getPlayers().player1.isAttacked, false);
 });
+
+test("Play larger card, but only move up to the other player", function() {
+	game.setupGame({
+		player1: {
+			location: 3
+		},
+		player2: {
+			location: 6
+		}
+	});
+	game.playTurn(0, [5]);
+	equal(game.getPlayerLocations().player1, 5);
+	equal(game.getPlayerLocations().player2, 6);
+	equal(game.getPlayers().player1.isAttacked, false);
+});
