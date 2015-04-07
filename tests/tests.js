@@ -208,3 +208,7 @@ test("Block with two cards", function() {
 // Test a block on a dashing strike
 // Test no being able to block a normal attack
 // Test that you can't retreat past the end of the board
+// Test that one hit wins the round
+// Test that winnig 3 out of 5 rounds wins the game
+// Test that in the second round, the loser of the previous round chooses who goes first
+// Test that when you block or retreat you can't draw cards until the end of your turn
