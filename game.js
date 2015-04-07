@@ -60,44 +60,52 @@ var game = function() {
 	};
 
 	var playTurn = function(player, cards) {
+		if (players[player].isAttacked) {
+			playTurnAttacked(player, cards);
+		} else {
+			playTurnNormal(player, cards);
+		}
+		lastPlayedCards = cards;
+	};
+
+	var playTurnAttacked = function(player, cards) {
+		if (cardsAreTheSame(cards, lastPlayedCards)) {
+			// Do nothing. This is a block
+		} else {
+			// Retreat
+			players[player].location += cards[0] * -players[player].direction;
+		}
+		players[player].isAttacked = false;
+	};
+
+	var playTurnNormal = function(player, cards) {
 		var newLocation = players[player].location + (cards[0] * players[player].direction);
 		var otherPlayer = ! player ? 1 : 0;
 
-		if (players[player].isAttacked) {
-			if (cardsAreTheSame(cards, lastPlayedCards)) {
-				// Do nothing. This is a block
-			} else {
-				// Retreat
-				players[player].location += cards[0] * -players[player].direction;
+		var playersAreNextToEachOther = Math.abs(players[player].location - players[otherPlayer].location) === 1;
+		if (newLocation === players[otherPlayer].location) {
+			// Attack
+			players[otherPlayer].isAttacked = true;
+		} else if (isDashingStrike(player, cards)) {
+			// Dashing strike
+			players[player].location += cards[0] * players[player].direction;
+			players[otherPlayer].isAttacked = true;
+		} else if (playersAreNextToEachOther) {
+			// Push
+			players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
+			if (players[otherPlayer].location > 15) {
+				players[otherPlayer].location = 15;
+			} else if (players[otherPlayer].location < 1) {
+				players[otherPlayer].location = 1;
 			}
-			players[player].isAttacked = false;
+		} else if ((player === 0 && newLocation > players[otherPlayer].location) ||
+				(player === 1 && newLocation < players[otherPlayer].location)) {
+			// Move, not past the other player
+			players[player].location = players[otherPlayer].location - players[player].direction;
 		} else {
-			var playersAreNextToEachOther = Math.abs(players[player].location - players[otherPlayer].location) === 1;
-			if (newLocation === players[otherPlayer].location) {
-				// Attack
-				players[otherPlayer].isAttacked = true;
-			} else if (isDashingStrike(player, cards)) {
-				// Dashing strike
-				players[player].location += cards[0] * players[player].direction;
-				players[otherPlayer].isAttacked = true;
-			} else if (playersAreNextToEachOther) {
-				// Push
-				players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
-				if (players[otherPlayer].location > 15) {
-					players[otherPlayer].location = 15;
-				} else if (players[otherPlayer].location < 1) {
-					players[otherPlayer].location = 1;
-				}
-			} else if ((player === 0 && newLocation > players[otherPlayer].location) ||
-					(player === 1 && newLocation < players[otherPlayer].location)) {
-				// Move, not past the other player
-				players[player].location = players[otherPlayer].location - players[player].direction;
-			} else {
-				// Move
-				players[player].location += cards[0] * players[player].direction;
-			}
+			// Move
+			players[player].location += cards[0] * players[player].direction;
 		}
-		lastPlayedCards = cards;
 	};
 
 	var isDashingStrike = function(player, cards) {
