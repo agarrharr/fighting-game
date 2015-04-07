@@ -205,6 +205,21 @@ test("Block with two cards", function() {
 	equal(game.getPlayers().player2.isAttacked, false);
 });
 
+test("Can't retreat from normal attack", function() {
+	game.setupGame({
+		player1: {
+			location: 3,
+			roundsWon: 0
+		},
+		player2: {
+			location: 8,
+			cards: [2,3,4,3,1]
+		}
+	});
+	game.playTurn(0, [5]);
+	equal(game.getPlayers().player1.roundsWon, 1);
+});
+
 // Test a block on a dashing strike
 // Test no being able to block a normal attack
 // Test that you can't retreat past the end of the board
