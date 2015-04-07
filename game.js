@@ -79,10 +79,7 @@ var game = function() {
 	};
 
 	var playTurnNormal = function(player, cards) {
-		var newLocation = players[player].location + (cards[0] * players[player].direction);
-		var otherPlayer = ! player ? 1 : 0;
-
-		if (newLocation === players[otherPlayer].location) {
+		if (playedValidAttackCard(player, cards)) {
 			attack(player, cards);
 		} else if (isDashingStrike(player, cards)) {
 			dashingStrike(player, cards);
@@ -91,6 +88,13 @@ var game = function() {
 		} else {
 			move(player, cards);
 		}
+	};
+
+	var playedValidAttackCard = function(player, cards) {
+		var newLocation = players[player].location + (cards[0] * players[player].direction);
+		var otherPlayer = ! player ? 1 : 0;
+
+		return newLocation === players[otherPlayer].location;
 	};
 
 	var attack = function(player, cards) {
