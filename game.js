@@ -84,27 +84,46 @@ var game = function() {
 
 		var playersAreNextToEachOther = Math.abs(players[player].location - players[otherPlayer].location) === 1;
 		if (newLocation === players[otherPlayer].location) {
-			// Attack
-			players[otherPlayer].isAttacked = true;
+			attack(player, cards);
 		} else if (isDashingStrike(player, cards)) {
-			// Dashing strike
-			players[player].location += cards[0] * players[player].direction;
-			players[otherPlayer].isAttacked = true;
+			dashingStrike(player, cards);
 		} else if (playersAreNextToEachOther) {
-			// Push
-			players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
-			if (players[otherPlayer].location > 15) {
-				players[otherPlayer].location = 15;
-			} else if (players[otherPlayer].location < 1) {
-				players[otherPlayer].location = 1;
-			}
-		} else if ((player === 0 && newLocation > players[otherPlayer].location) ||
-				(player === 1 && newLocation < players[otherPlayer].location)) {
-			// Move, not past the other player
-			players[player].location = players[otherPlayer].location - players[player].direction;
+			push(player, cards);
 		} else {
-			// Move
-			players[player].location += cards[0] * players[player].direction;
+			move(player, cards);
+		}
+	};
+
+	var attack = function(player, cards) {
+		var otherPlayer = ! player ? 1 : 0;
+		players[otherPlayer].isAttacked = true;
+	};
+
+	var move = function(player, cards) {
+		var otherPlayer = ! player ? 1 : 0;
+		players[player].location += cards[0] * players[player].direction;
+		if (movedPastOtherPlayer()) {
+			players[player].location = players[otherPlayer].location - players[player].direction;
+		}
+	};
+
+	var movedPastOtherPlayer = function() {
+		return (players[0].location > players[1].location);
+	};
+
+	var dashingStrike = function(player, cards) {
+		var otherPlayer = ! player ? 1 : 0;
+		move(player, cards);
+		attack(player, cards);
+	};
+
+	var push = function(player, cards) {
+		var otherPlayer = ! player ? 1 : 0;
+		players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
+		if (players[otherPlayer].location > 15) {
+			players[otherPlayer].location = 15;
+		} else if (players[otherPlayer].location < 1) {
+			players[otherPlayer].location = 1;
 		}
 	};
 
