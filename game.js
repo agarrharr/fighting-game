@@ -82,12 +82,11 @@ var game = function() {
 		var newLocation = players[player].location + (cards[0] * players[player].direction);
 		var otherPlayer = ! player ? 1 : 0;
 
-		var playersAreNextToEachOther = Math.abs(players[player].location - players[otherPlayer].location) === 1;
 		if (newLocation === players[otherPlayer].location) {
 			attack(player, cards);
 		} else if (isDashingStrike(player, cards)) {
 			dashingStrike(player, cards);
-		} else if (playersAreNextToEachOther) {
+		} else if (playersAreNextToEachOther(player)) {
 			push(player, cards);
 		} else {
 			move(player, cards);
@@ -109,6 +108,11 @@ var game = function() {
 
 	var movedPastOtherPlayer = function() {
 		return (players[0].location > players[1].location);
+	};
+
+	var playersAreNextToEachOther = function(player) {
+		var otherPlayer = ! player ? 1 : 0;
+		return Math.abs(players[player].location - players[otherPlayer].location) === 1;
 	};
 
 	var dashingStrike = function(player, cards) {
