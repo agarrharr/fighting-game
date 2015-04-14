@@ -1,4 +1,7 @@
 var game = function() {
+	var FIRST_SPACE = 1;
+	var LAST_SPACE = 15;
+
 	var players = [
 			{
 				direction: 1
@@ -22,7 +25,7 @@ var game = function() {
 
 		if (config === undefined) {
 			players[0] = {
-				location: 1,
+				location: FIRST_SPACE,
 				cards: getRandomCard(5),
 				roundsWon: 0,
 				direction: 1,
@@ -30,7 +33,7 @@ var game = function() {
 			};
 			
 			players[1] = {
-				location: 15,
+				location: LAST_SPACE,
 				cards: getRandomCard(5),
 				roundsWon: 0,
 				direction: -1,
@@ -52,7 +55,7 @@ var game = function() {
 		}
 
 		if (config.player2) {
-			players[1].location = config.player2.location || 15;
+			players[1].location = config.player2.location || LAST_SPACE;
 			players[1].cards = config.player2.cards;
 			players[1].roundsWon = config.player2.roundsWon || 0;
 			players[1].isAttacked = config.player2.isAttacked || false;
@@ -100,6 +103,26 @@ var game = function() {
 	var attack = function(player, cards) {
 		var otherPlayer = ! player ? 1 : 0;
 		players[otherPlayer].isAttacked = true;
+		
+		if (playerWins(player, cards)) {
+			players[player].roundsWon += 1;
+		}
+	};
+	
+	var playerWins = function(player, cards) {
+		var otherPlayer = ! player ? 1 : 0;
+		var isDashingStrike = cards.length > 1 && cards[0] !== cards[1];
+
+		if (isDashingStrike) {
+			if (players[otherPlayer].location === FIRST_SPACE ||
+					players[otherPlayer].location === LAST_SPACE) {
+				players[player].roundsWon += 1;
+			}
+		} else {
+			if (players[otherPlayer].cards.indexOf(cards[0]) === -1) {
+				players[player].roundsWon += 1;
+			}
+		}
 	};
 
 	var move = function(player, cards) {
@@ -128,10 +151,10 @@ var game = function() {
 	var push = function(player, cards) {
 		var otherPlayer = ! player ? 1 : 0;
 		players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
-		if (players[otherPlayer].location > 15) {
-			players[otherPlayer].location = 15;
-		} else if (players[otherPlayer].location < 1) {
-			players[otherPlayer].location = 1;
+		if (players[otherPlayer].location > LAST_SPACE) {
+			players[otherPlayer].location = LAST_SPACE;
+		} else if (players[otherPlayer].location < FIRST_SPACE) {
+			players[otherPlayer].location = FIRST_SPACE;
 		}
 	};
 

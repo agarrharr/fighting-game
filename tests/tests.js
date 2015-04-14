@@ -57,7 +57,8 @@ test("Attack!", function() {
 			location: 1
 		},
 		player2: {
-			location: 6
+			location: 6,
+			cards: [1,2,3,4,5]
 		}
 	});
 	game.playTurn(0, [5], 'attack');
@@ -219,20 +220,20 @@ test("dashing strike with a [5, 1] when 3 spaces away", function() {
 	equal(game.getPlayerLocations().player2, 4);
 });
 
-// test("Can't retreat from normal attack", function() {
-// 	game.setupGame({
-// 		player1: {
-// 			location: 3,
-// 			roundsWon: 0
-// 		},
-// 		player2: {
-// 			location: 8,
-// 			cards: [2,3,4,3,1]
-// 		}
-// 	});
-// 	game.playTurn(0, [5], 'retreat');
-// 	equal(game.getPlayers().player1.roundsWon, 1);
-// });
+test("Player 1 wins the round", function() {
+	game.setupGame({
+		player1: {
+			location: 3,
+			roundsWon: 0
+		},
+		player2: {
+			location: 8,
+			cards: [2,3,4,3,1]
+		}
+	});
+	game.playTurn(0, [5], 'attack');
+	equal(game.getPlayers().player1.roundsWon, 1);
+});
 
 // Test a block on a dashing strike
 // Test no being able to block a normal attack
