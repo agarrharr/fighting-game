@@ -59,35 +59,35 @@ var game = function() {
 		}
 	};
 
-	var playTurn = function(player, cards) {
+	var playTurn = function(player, cards, moveType) {
 		if (players[player].isAttacked) {
-			playTurnAttacked(player, cards);
+			playTurnAttacked(player, cards, moveType);
 		} else {
-			playTurnNormal(player, cards);
+			playTurnNormal(player, cards, moveType);
 		}
 		lastPlayedCards = cards;
 	};
 
-	var playTurnAttacked = function(player, cards) {
-		if (cardsAreTheSame(cards, lastPlayedCards)) {
-			// Do nothing. This is a block
-		} else {
-			// Retreat
-			players[player].location += cards[0] * -players[player].direction;
-		}
+	var playTurnAttacked = function(player, cards, moveType) {
+		var moveTypes = {
+			'block': function() { return; },
+			'retreat': function(player, cards) {
+				players[player].location += cards[0] * -players[player].direction;
+			}
+		};
+		moveTypes[moveType](player, cards);
+
 		players[player].isAttacked = false;
 	};
 
-	var playTurnNormal = function(player, cards) {
-		if (playedValidAttackCard(player, cards)) {
-			attack(player, cards);
-		} else if (isDashingStrike(player, cards)) {
-			dashingStrike(player, cards);
-		} else if (playersAreNextToEachOther(player)) {
-			push(player, cards);
-		} else {
-			move(player, cards);
-		}
+	var playTurnNormal = function(player, cards, moveType) {
+		var moveTypes = {
+			'attack': attack,
+			'dashing strike': dashingStrike,
+			'push': push,
+			'move': move
+		};
+		moveTypes[moveType](player, cards);
 	};
 
 	var playedValidAttackCard = function(player, cards) {

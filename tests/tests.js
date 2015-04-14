@@ -39,14 +39,14 @@ test("setupGame works", function() {
 
 test( "First move", function() {
 	game.setupGame();
-	game.playTurn(0, [5]);
+	game.playTurn(0, [5], 'move');
 	equal(game.getPlayerLocations().player1, 6);
 });
 
 test( "Play two moves", function() {
 	game.setupGame();
-	game.playTurn(0, [1]);
-	game.playTurn(1, [1]);
+	game.playTurn(0, [1], 'move');
+	game.playTurn(1, [1], 'move');
 	equal(game.getPlayerLocations().player1, 2);
 	equal(game.getPlayerLocations().player2, 14);
 });
@@ -60,7 +60,7 @@ test("Attack!", function() {
 			location: 6
 		}
 	});
-	game.playTurn(0, [5]);
+	game.playTurn(0, [5], 'attack');
 	equal(game.getPlayerLocations().player1, 1);
 	equal(game.getPlayers().player2.isAttacked, true);
 });
@@ -74,7 +74,7 @@ test("Dashing strike!", function() {
 			location: 13
 		}
 	});
-	game.playTurn(0, [3, 5]);
+	game.playTurn(0, [3, 5], 'dashing strike');
 	equal(game.getPlayerLocations().player1, 8);
 	equal(game.getPlayers().player2.isAttacked, true);
 });
@@ -90,7 +90,7 @@ test("Retreat from dashing strike", function() {
 		},
 		lastPlayedCards: [2,3]
 	});
-	game.playTurn(1, [2]);
+	game.playTurn(1, [2], 'retreat');
 	equal(game.getPlayerLocations().player2, 8);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
@@ -104,7 +104,7 @@ test("Push", function() {
 			location: 6
 		}
 	});
-	game.playTurn(1, [3]);
+	game.playTurn(1, [3], 'push');
 	equal(game.getPlayerLocations().player1, 2);
 	equal(game.getPlayers().player1.isAttacked, false);
 });
@@ -118,7 +118,7 @@ test("Player 1 plays larger card, but only move up to the other player", functio
 			location: 6
 		}
 	});
-	game.playTurn(0, [5]);
+	game.playTurn(0, [5], 'move');
 	equal(game.getPlayerLocations().player1, 5);
 	equal(game.getPlayerLocations().player2, 6);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -133,7 +133,7 @@ test("Player 2 plays larger card, but only move up to the other player", functio
 			location: 6
 		}
 	});
-	game.playTurn(1, [5]);
+	game.playTurn(1, [5], 'move');
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 4);
 	equal(game.getPlayers().player2.isAttacked, false);
@@ -148,7 +148,7 @@ test("Player 1 can't push Player 2 off the board", function() {
 			location: 14
 		}
 	});
-	game.playTurn(0, [5]);
+	game.playTurn(0, [5], 'push');
 	equal(game.getPlayerLocations().player1, 13);
 	equal(game.getPlayerLocations().player2, 15);
 	equal(game.getPlayers().player2.isAttacked, false);
@@ -163,7 +163,7 @@ test("Player 2 can't push Player 1 off the board", function() {
 			location: 3
 		}
 	});
-	game.playTurn(1, [5]);
+	game.playTurn(1, [5], 'push');
 	equal(game.getPlayerLocations().player1, 1);
 	equal(game.getPlayerLocations().player2, 3);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -180,7 +180,7 @@ test("Block", function() {
 		},
 		lastPlayedCards: [5]
 	});
-	game.playTurn(1, [5]);
+	game.playTurn(1, [5], 'block');
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 8);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -198,32 +198,34 @@ test("Block with two cards", function() {
 		},
 		lastPlayedCards: [5,5]
 	});
-	game.playTurn(1, [5,5]);
+	game.playTurn(1, [5, 5], 'block');
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 8);
 	equal(game.getPlayers().player1.isAttacked, false);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
 
-test("Can't retreat from normal attack", function() {
-	game.setupGame({
-		player1: {
-			location: 3,
-			roundsWon: 0
-		},
-		player2: {
-			location: 8,
-			cards: [2,3,4,3,1]
-		}
-	});
-	game.playTurn(0, [5]);
-	equal(game.getPlayers().player1.roundsWon, 1);
-});
+// test("Can't retreat from normal attack", function() {
+// 	game.setupGame({
+// 		player1: {
+// 			location: 3,
+// 			roundsWon: 0
+// 		},
+// 		player2: {
+// 			location: 8,
+// 			cards: [2,3,4,3,1]
+// 		}
+// 	});
+// 	game.playTurn(0, [5], 'retreat');
+// 	equal(game.getPlayers().player1.roundsWon, 1);
+// });
 
 // Test a block on a dashing strike
 // Test no being able to block a normal attack
+// Test that you can dashing strike with a [5, 1] when 3 spaces away
+// Test that you can't dashing strike when you're 1 space away
 // Test that you can't retreat past the end of the board
 // Test that one hit wins the round
-// Test that winnig 3 out of 5 rounds wins the game
-// Test that in the second round, the loser of the previous round chooses who goes first
 // Test that when you block or retreat you can't draw cards until the end of your turn
+// Test that winning 3 out of 5 rounds wins the game
+// Test that in the second round, the loser of the previous round chooses who goes first
