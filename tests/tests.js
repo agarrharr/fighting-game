@@ -205,6 +205,20 @@ test("Block with two cards", function() {
 	equal(game.getPlayers().player2.isAttacked, false);
 });
 
+test("dashing strike with a [5, 1] when 3 spaces away", function() {
+	game.setupGame({
+		player1: {
+			location: 3
+		},
+		player2: {
+			location: 6,
+		}
+	});
+	game.playTurn(1, [5, 1], 'dashing strike');
+	equal(game.getPlayers().player1.isAttacked, true);
+	equal(game.getPlayerLocations().player2, 4);
+});
+
 // test("Can't retreat from normal attack", function() {
 // 	game.setupGame({
 // 		player1: {
@@ -222,7 +236,6 @@ test("Block with two cards", function() {
 
 // Test a block on a dashing strike
 // Test no being able to block a normal attack
-// Test that you can dashing strike with a [5, 1] when 3 spaces away
 // Test that you can't dashing strike when you're 1 space away
 // Test that you can't retreat past the end of the board
 // Test that one hit wins the round
