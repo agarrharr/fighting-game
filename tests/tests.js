@@ -235,6 +235,10 @@ test("Player 1 wins the round", function() {
 	equal(game.getPlayers().player1.roundsWon, 1);
 });
 
+// TODO: check that it's a valid move at the beginning of playTurn
+// TODO: add ability to move backwards
+// Test that you can win the round with a dashing strike if they're at the end of the board
+// Test that you can win the round if you attack with 2 cards and they only have 1
 // Test a block on a dashing strike
 // Test no being able to block a normal attack
 // Test that you can't dashing strike when you're 1 space away
