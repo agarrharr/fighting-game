@@ -23,15 +23,21 @@ d3.chart('gameBoard', {
 					this.attr({
 						'r': circleRadius,
 						'cy': circleY,
-						'cx': function(d) {
-							return xScale(d - 1) + (boardWidth / 2);
-						},
 						'fill': function(d, i) {
 							return playerColors[i];
 						}
 					});
+				},
+				'merge': function() {
+					this.transition()
+						.duration(500)
+						.attr({
+							'cx': function(d) {
+								return xScale(d - 1) + (boardWidth / 2);
+							}
+						});
+					}
 				}
-			}
 		});
 
 		this.layer('board', boardGroup, {
@@ -73,3 +79,7 @@ var chart = d3.select('#gameBoard')
 	.chart('gameBoard');
 
 chart.draw([1, 18]);
+
+setTimeout(function() {
+	chart.draw([6, 18]);
+}, 1000);
