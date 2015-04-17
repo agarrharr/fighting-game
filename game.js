@@ -1,6 +1,6 @@
 var game = function() {
 	var FIRST_SPACE = 1;
-	var LAST_SPACE = 15;
+	var LAST_SPACE = 18;
 
 	var players = [
 			{

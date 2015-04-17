@@ -1,7 +1,7 @@
 test( "Game start", function() {
 	game.setupGame();
 	equal(game.getPlayerLocations().player1, 1);
-	equal(game.getPlayerLocations().player2, 15);
+	equal(game.getPlayerLocations().player2, 18);
 	equal(game.getPlayerCards().player1.length, 5);
 	equal(game.getPlayerCards().player2.length, 5);
 	equal(game.getDeck().length, 15);
@@ -48,7 +48,7 @@ test( "Play two moves", function() {
 	game.playTurn(0, [1], 'move');
 	game.playTurn(1, [1], 'move');
 	equal(game.getPlayerLocations().player1, 2);
-	equal(game.getPlayerLocations().player2, 14);
+	equal(game.getPlayerLocations().player2, 17);
 });
 
 test("Attack!", function() {
@@ -151,7 +151,7 @@ test("Player 1 can't push Player 2 off the board", function() {
 	});
 	game.playTurn(0, [5], 'push');
 	equal(game.getPlayerLocations().player1, 13);
-	equal(game.getPlayerLocations().player2, 15);
+	equal(game.getPlayerLocations().player2, 18);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
 
