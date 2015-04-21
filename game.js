@@ -27,7 +27,7 @@ var game = function() {
 		if (config === undefined) {
 			players[0] = {
 				location: FIRST_SPACE,
-				cards: getRandomCard(5),
+				cards: getCardsFromDeck(5),
 				roundsWon: 0,
 				direction: 1,
 				isAttacked: false
@@ -35,7 +35,7 @@ var game = function() {
 			
 			players[1] = {
 				location: LAST_SPACE,
-				cards: getRandomCard(5),
+				cards: getCardsFromDeck(5),
 				roundsWon: 0,
 				direction: -1,
 				isAttacked: false
@@ -199,7 +199,7 @@ var game = function() {
 		};
 	};
 
-	var getRandomCard = function(numberOfCards) {
+	var getCardsFromDeck = function(numberOfCards) {
 		var cards = [];
 		for (var i = 0; i < numberOfCards; i += 1) {
 			cards.push(deck.pop());
