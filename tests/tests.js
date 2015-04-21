@@ -7,6 +7,7 @@ test( "Game start", function() {
 	equal(game.getDeck().length, 15);
 	equal(game.getRoundsWon().player1, 0);
 	equal(game.getRoundsWon().player2, 0);
+	equal(game.getCurrentPlayer(), 0);
 });
 
 test("setupGame works", function() {
@@ -41,6 +42,7 @@ test( "First move", function() {
 	game.setupGame();
 	game.playTurn(0, [5], 'move');
 	equal(game.getPlayerLocations().player1, 6);
+	equal(game.getCurrentPlayer(), 1);
 });
 
 test( "Play two moves", function() {
