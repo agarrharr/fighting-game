@@ -67,75 +67,75 @@ var game = function() {
 		}
 	};
 
-	var playTurn = function(player, cards, moveType) {
-		if (players[player].isAttacked) {
-			playTurnAttacked(player, cards, moveType);
+	var playTurn = function(cards, moveType) {
+		if (players[currentPlayer].isAttacked) {
+			playTurnAttacked(cards, moveType);
 		} else {
-			playTurnNormal(player, cards, moveType);
+			playTurnNormal(cards, moveType);
 		}
 		lastPlayedCards = cards;
 		currentPlayer = currentPlayer ? 0 : 1;
 	};
 
-	var playTurnAttacked = function(player, cards, moveType) {
+	var playTurnAttacked = function(cards, moveType) {
 		var moveTypes = {
 			'block': function() { return; },
-			'retreat': function(player, cards) {
-				players[player].location += cards[0] * -players[player].direction;
+			'retreat': function(cards) {
+				players[currentPlayer].location += cards[0] * -players[currentPlayer].direction;
 			}
 		};
-		moveTypes[moveType](player, cards);
+		moveTypes[moveType](cards);
 
-		players[player].isAttacked = false;
+		players[currentPlayer].isAttacked = false;
 	};
 
-	var playTurnNormal = function(player, cards, moveType) {
+	var playTurnNormal = function(cards, moveType) {
 		var moveTypes = {
 			'attack': attack,
 			'dashing strike': dashingStrike,
 			'push': push,
 			'move': move
 		};
-		moveTypes[moveType](player, cards);
+		moveTypes[moveType](cards);
 	};
 
-	var playedValidAttackCard = function(player, cards) {
-		var newLocation = players[player].location + (cards[0] * players[player].direction);
-		var otherPlayer = ! player ? 1 : 0;
+	// var playedValidAttackCard = function(cards) {
+	// 	var newLocation = players[currentPlayer].location + (cards[0] * players[currentPlayer].direction);
+	// 	var otherPlayer = currentPlayer ? 0 : 1;
 
-		return newLocation === players[otherPlayer].location;
-	};
+	// 	return newLocation === players[otherPlayer].location;
+	// };
 
-	var attack = function(player, cards) {
-		var otherPlayer = ! player ? 1 : 0;
+	var attack = function(cards) {
+		var otherPlayer = currentPlayer ? 0 : 1;
 		players[otherPlayer].isAttacked = true;
 		
-		if (playerWins(player, cards)) {
-			players[player].roundsWon += 1;
+		if (playerWins(cards)) {
+			players[currentPlayer].roundsWon += 1;
 		}
 	};
 	
-	var playerWins = function(player, cards) {
-		var otherPlayer = ! player ? 1 : 0;
+	var playerWins = function(cards) {
+		var otherPlayer = currentPlayer ? 0 : 1;
 		var isDashingStrike = cards.length > 1 && cards[0] !== cards[1];
 
 		if (isDashingStrike) {
 			if (players[otherPlayer].location === FIRST_SPACE ||
 					players[otherPlayer].location === LAST_SPACE) {
-				players[player].roundsWon += 1;
+				players[currentPlayer].roundsWon += 1;
 			}
 		} else {
 			if (players[otherPlayer].cards.indexOf(cards[0]) === -1) {
-				players[player].roundsWon += 1;
+				players[currentPlayer].roundsWon += 1;
 			}
 		}
 	};
 
-	var move = function(player, cards) {
-		var otherPlayer = ! player ? 1 : 0;
-		players[player].location += cards[0] * players[player].direction;
+	var move = function(cards) {
+		var otherPlayer = currentPlayer ? 0 : 1;
+		players[currentPlayer].location += cards[0] * players[currentPlayer].direction;
 		if (movedPastOtherPlayer()) {
-			players[player].location = players[otherPlayer].location - players[player].direction;
+			players[currentPlayer].location = players[otherPlayer].location - players[currentPlayer].direction;
 		}
 	};
 
@@ -143,19 +143,19 @@ var game = function() {
 		return (players[0].location > players[1].location);
 	};
 
-	var playersAreNextToEachOther = function(player) {
-		var otherPlayer = ! player ? 1 : 0;
-		return Math.abs(players[player].location - players[otherPlayer].location) === 1;
+	var playersAreNextToEachOther = function() {
+		var otherPlayer = currentPlayer ? 0 : 1;
+		return Math.abs(players[currentPlayer].location - players[otherPlayer].location) === 1;
 	};
 
-	var dashingStrike = function(player, cards) {
-		var otherPlayer = ! player ? 1 : 0;
-		move(player, cards);
-		attack(player, cards);
+	var dashingStrike = function(cards) {
+		var otherPlayer = currentPlayer ? 0 : 1;
+		move(cards);
+		attack(cards);
 	};
 
-	var push = function(player, cards) {
-		var otherPlayer = ! player ? 1 : 0;
+	var push = function(cards) {
+		var otherPlayer = currentPlayer ? 0 : 1;
 		players[otherPlayer].location += cards[0] * -players[otherPlayer].direction;
 		if (players[otherPlayer].location > LAST_SPACE) {
 			players[otherPlayer].location = LAST_SPACE;
@@ -164,14 +164,14 @@ var game = function() {
 		}
 	};
 
-	var isDashingStrike = function(player, cards) {
+	var isDashingStrike = function(cards) {
 		if (cards.length !== 2) {
 			return false;
 		}
 		var sumOfCards = cards[0] + cards[1];
 		
-		var otherPlayer = ! player ? 1 : 0;
-		var firstLocation = players[player].location + sumOfCards;
+		var otherPlayer = currentPlayer ? 0 : 1;
+		var firstLocation = players[currentPlayer].location + sumOfCards;
 		var secondLocation = players[otherPlayer].location;
 
 		return firstLocation === secondLocation;

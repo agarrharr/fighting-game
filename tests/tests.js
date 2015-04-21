@@ -40,15 +40,15 @@ test("setupGame works", function() {
 
 test( "First move", function() {
 	game.setupGame();
-	game.playTurn(0, [5], 'move');
+	game.playTurn([5], 'move');
 	equal(game.getPlayerLocations().player1, 6);
 	equal(game.getCurrentPlayer(), 1);
 });
 
 test( "Play two moves", function() {
 	game.setupGame();
-	game.playTurn(0, [1], 'move');
-	game.playTurn(1, [1], 'move');
+	game.playTurn([1], 'move');
+	game.playTurn([1], 'move');
 	equal(game.getPlayerLocations().player1, 2);
 	equal(game.getPlayerLocations().player2, 17);
 });
@@ -63,7 +63,7 @@ test("Attack!", function() {
 			cards: [1,2,3,4,5]
 		}
 	});
-	game.playTurn(0, [5], 'attack');
+	game.playTurn([5], 'attack');
 	equal(game.getPlayerLocations().player1, 1);
 	equal(game.getPlayers().player2.isAttacked, true);
 });
@@ -77,7 +77,7 @@ test("Dashing strike!", function() {
 			location: 13
 		}
 	});
-	game.playTurn(0, [3, 5], 'dashing strike');
+	game.playTurn([3, 5], 'dashing strike');
 	equal(game.getPlayerLocations().player1, 8);
 	equal(game.getPlayers().player2.isAttacked, true);
 });
@@ -91,9 +91,10 @@ test("Retreat from dashing strike", function() {
 			location: 6,
 			isAttacked: true
 		},
-		lastPlayedCards: [2,3]
+		lastPlayedCards: [2,3],
+		currentPlayer: 1
 	});
-	game.playTurn(1, [2], 'retreat');
+	game.playTurn([2], 'retreat');
 	equal(game.getPlayerLocations().player2, 8);
 	equal(game.getPlayers().player2.isAttacked, false);
 });
@@ -105,9 +106,10 @@ test("Push", function() {
 		},
 		player2: {
 			location: 6
-		}
+		},
+		currentPlayer: 1
 	});
-	game.playTurn(1, [3], 'push');
+	game.playTurn([3], 'push');
 	equal(game.getPlayerLocations().player1, 2);
 	equal(game.getPlayers().player1.isAttacked, false);
 });
@@ -121,7 +123,7 @@ test("Player 1 plays larger card, but only move up to the other player", functio
 			location: 6
 		}
 	});
-	game.playTurn(0, [5], 'move');
+	game.playTurn([5], 'move');
 	equal(game.getPlayerLocations().player1, 5);
 	equal(game.getPlayerLocations().player2, 6);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -134,9 +136,10 @@ test("Player 2 plays larger card, but only move up to the other player", functio
 		},
 		player2: {
 			location: 6
-		}
+		},
+		currentPlayer: 1
 	});
-	game.playTurn(1, [5], 'move');
+	game.playTurn([5], 'move');
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 4);
 	equal(game.getPlayers().player2.isAttacked, false);
@@ -151,7 +154,7 @@ test("Player 1 can't push Player 2 off the board", function() {
 			location: 14
 		}
 	});
-	game.playTurn(0, [5], 'push');
+	game.playTurn([5], 'push');
 	equal(game.getPlayerLocations().player1, 13);
 	equal(game.getPlayerLocations().player2, 18);
 	equal(game.getPlayers().player2.isAttacked, false);
@@ -164,9 +167,10 @@ test("Player 2 can't push Player 1 off the board", function() {
 		},
 		player2: {
 			location: 3
-		}
+		},
+		currentPlayer: 1
 	});
-	game.playTurn(1, [5], 'push');
+	game.playTurn([5], 'push');
 	equal(game.getPlayerLocations().player1, 1);
 	equal(game.getPlayerLocations().player2, 3);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -181,9 +185,10 @@ test("Block", function() {
 			location: 8,
 			isAttacked: true
 		},
-		lastPlayedCards: [5]
+		lastPlayedCards: [5],
+		currentPlayer: 1
 	});
-	game.playTurn(1, [5], 'block');
+	game.playTurn([5], 'block');
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 8);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -199,9 +204,10 @@ test("Block with two cards", function() {
 			location: 8,
 			isAttacked: true
 		},
-		lastPlayedCards: [5,5]
+		lastPlayedCards: [5,5],
+		currentPlayer: 1
 	});
-	game.playTurn(1, [5, 5], 'block');
+	game.playTurn([5, 5], 'block');
 	equal(game.getPlayerLocations().player1, 3);
 	equal(game.getPlayerLocations().player2, 8);
 	equal(game.getPlayers().player1.isAttacked, false);
@@ -215,9 +221,10 @@ test("dashing strike with a [5, 1] when 3 spaces away", function() {
 		},
 		player2: {
 			location: 6,
-		}
+		},
+		currentPlayer: 1
 	});
-	game.playTurn(1, [5, 1], 'dashing strike');
+	game.playTurn([5, 1], 'dashing strike');
 	equal(game.getPlayers().player1.isAttacked, true);
 	equal(game.getPlayerLocations().player2, 4);
 });
@@ -233,7 +240,7 @@ test("Player 1 wins the round", function() {
 			cards: [2,3,4,3,1]
 		}
 	});
-	game.playTurn(0, [5], 'attack');
+	game.playTurn([5], 'attack');
 	equal(game.getPlayers().player1.roundsWon, 1);
 });
 
