@@ -10,7 +10,7 @@ var game = function() {
 				direction: -1
 			}
 		];
-	
+	var currentPlayer;	
 	var deck;
 	var lastPlayedCards = [];
 	
@@ -22,6 +22,7 @@ var game = function() {
 				3,3,3,3,3,
 				4,4,4,4,4,
 				5,5,5,5,5];
+		currentPlayer = 0;
 
 		if (config === undefined) {
 			players[0] = {
@@ -47,6 +48,10 @@ var game = function() {
 			lastPlayedCards = config.lastPlayedCards;
 		}
 
+		if (config.currentPlayer) {
+			currentPlayer = config.currentPlayer;
+		}
+
 		if (config.player1)	{
 			players[0].location = config.player1.location || 1;	
 			players[0].cards = config.player1.cards;
@@ -69,6 +74,7 @@ var game = function() {
 			playTurnNormal(player, cards, moveType);
 		}
 		lastPlayedCards = cards;
+		currentPlayer = currentPlayer ? 0 : 1;
 	};
 
 	var playTurnAttacked = function(player, cards, moveType) {
@@ -231,6 +237,10 @@ var game = function() {
 		};
 	};
 
+	var getCurrentPlayer = function() {
+		return currentPlayer;
+	};
+
 	return {
 		getPlayerLocations: getPlayerLocations,
 		getPlayerCards: getPlayerCards,
@@ -239,6 +249,7 @@ var game = function() {
 		getRoundsWon: getRoundsWon,
 		playTurn: playTurn,
 		setupGame: setupGame,
-		getPlayers: getPlayers
+		getPlayers: getPlayers,
+		getCurrentPlayer: getCurrentPlayer
 	};
 }();
