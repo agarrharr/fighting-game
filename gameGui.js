@@ -92,9 +92,7 @@ d3.chart('cards', {
 			events: {
 				'enter': function() {
 					this.attr({
-						'x': function(d, i) {
-							return xScale(i);
-						},
+						'x': 0,
 						'y': 0,
 						'height': cardHeight,
 						'width': cardWidth
@@ -103,6 +101,14 @@ d3.chart('cards', {
 						'fill': 'white',
 						'stroke': 'black'
 					});
+
+					this.transition()
+						.duration(800)
+						.attr({
+							'x': function(d, i) {
+								return xScale(i);
+							}
+						});
 				},
 				'merge': function() {
 				}
