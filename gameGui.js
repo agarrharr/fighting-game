@@ -44,8 +44,13 @@ d3.chart('gameBoard', {
 
 		this.layer('board', boardGroup, {
 			dataBind: function() {
+				var data = [];
+				for(var i = 1; i <= 18; i += 1) {
+					data.push(i);
+				}
+
 				return this.selectAll('rect')
-				.data([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]);
+					.data(data);
 			},
 			insert: function() {
 				return this.append('rect');
