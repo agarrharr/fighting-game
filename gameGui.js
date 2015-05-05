@@ -88,15 +88,21 @@ d3.chart('cards', {
 
 		this.layer('cards', cardGroup, {
 			dataBind: function(data) {
-				return this.selectAll('rect')
+				return this.selectAll('g')
 				.data(data);
 			},
 			insert: function() {
-				return this.append('rect');
+				var card = this.append('g');
+				card.append('rect');
+				card.append('text').classed('leftNumber', true);
+				card.append('text').classed('centerNumber', true);
+				card.append('text').classed('rightNumber', true);
+
+				return card;
 			},
 			events: {
 				'enter': function() {
-					this.attr({
+					this.select('rect').attr({
 						'x': 0,
 						'y': 0,
 						'height': cardHeight,
@@ -107,11 +113,56 @@ d3.chart('cards', {
 						'stroke': 'black'
 					});
 
+					this.selectAll('text')
+						.style({
+							'font-family': 'Open Sans, sans-serif'
+						});
+
+					this.select('.leftNumber')
+						.text(function(d, i) {
+							return d;
+						})
+						.attr({
+							'x': 15,
+							'y': 30
+						})
+						.style({
+							'font-size': '24px'
+						});
+
+					this.select('.centerNumber')
+						.text(function(d, i) {
+							return d;
+						})
+						.attr({
+							'x': cardWidth / 2,
+							'y': cardHeight / 2 + 15
+						})
+						.style({
+							'font-size': '48px',
+							'text-anchor': 'middle',
+						});
+
+					var x = cardHeight - 30;
+					var y = cardWidth - 15;
+
+					this.select('.rightNumber')
+						.text(function(d, i) {
+							return d;
+						})
+						.attr({
+							'transform': 'rotate(180, ' + x + ',' + y + ') translate(' + x + ',' + y + ')'
+						})
+						.style({
+							'font-size': '24px',
+							'text-anchor': 'end',
+						});
+
 					this.transition()
 						.duration(800)
 						.attr({
-							'x': function(d, i) {
-								return xScale(i);
+							'transform': function(d, i) {
+								return 'translate(' + xScale(i) + ',0)';
 							}
 						});
 				},
