@@ -102,6 +102,9 @@ d3.chart('cards', {
 			},
 			events: {
 				'enter': function() {
+					var x = 15;
+					var y = 30;
+
 					this.select('rect').attr({
 						'x': 0,
 						'y': 0,
@@ -123,8 +126,8 @@ d3.chart('cards', {
 							return d;
 						})
 						.attr({
-							'x': 15,
-							'y': 30
+							'x': x,
+							'y': y
 						})
 						.style({
 							'font-size': '24px'
@@ -136,26 +139,22 @@ d3.chart('cards', {
 						})
 						.attr({
 							'x': cardWidth / 2,
-							'y': cardHeight / 2 + 15
+							'y': cardHeight / 2 + x
 						})
 						.style({
 							'font-size': '48px',
 							'text-anchor': 'middle',
 						});
 
-					var x = cardHeight - 30;
-					var y = cardWidth - 15;
-
 					this.select('.rightNumber')
 						.text(function(d, i) {
 							return d;
 						})
 						.attr({
-							'transform': 'rotate(180, ' + x + ',' + y + ') translate(' + x + ',' + y + ')'
+							'transform': 'rotate(180, ' + (cardWidth / 2) + ',' + (cardHeight / 2) + ') translate(' + x + ', ' + y + ')'
 						})
 						.style({
-							'font-size': '24px',
-							'text-anchor': 'end',
+							'font-size': '24px'
 						});
 
 					this.transition()
