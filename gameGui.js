@@ -8,9 +8,9 @@ d3.chart('gameBoard', {
 		var circleRadius = 20;
 		var playerColors = ['red', 'blue'];
 		var boardGroup = this.base.append('g').classed('boardGroup', true)
-				.attr('transform', 'translate(1,1)');
+				.attr('transform', 'translate(1, 1)');
 		var circleGroup = this.base.append('g').classed('circleGroup', true)
-				.attr('transform', 'translate(1,1)');
+				.attr('transform', 'translate(1, 1)');
 
 		this.layer('circles', circleGroup, {
 			dataBind: function(data) {
@@ -79,7 +79,8 @@ d3.chart('gameBoard', {
 
 d3.chart('cards', {
 	initialize: function() {
-		var cardGroup = this.base.append('g').classed('cardGroup', true);
+		var cardGroup = this.base.append('g').classed('cardGroup', true)
+				.attr('transform', 'translate(1, 1)');
 		var numberOfCards = 5;
 		var padding = 10;
 		var cardHeightRatio = 1.4;
@@ -166,12 +167,89 @@ d3.chart('cards', {
 						});
 				},
 				'merge': function() {
+					return this;
 				}
 			}
 		});
 
 		var xScale = function(i) {
 			return i * (cardWidth + padding);
+		};
+	}
+});
+
+d3.chart('buttons', {
+	initialize: function() {
+		'use strict';
+		var _Chart = this;
+
+		var buttonsGroup = this.base.append('g').classed('buttonsGroup', true)
+				.attr('transform', 'translate(1, 1)');
+		var buttonHeight = 50;
+		var buttonWidth;
+		var padding = 10;
+		var yOffset = 5;
+
+		_Chart.transform = function(data) {
+			buttonWidth = (boardWidth - (data.length - 1) * padding) / data.length;
+			return data;
+		};
+
+		this.layer('cards', buttonsGroup, {
+			dataBind: function(data) {
+				return this.selectAll('g')
+				.data(data);
+			},
+			insert: function() {
+				var group = this.append('g');
+				group.append('rect');
+				group.append('text');
+
+				return group;
+			},
+			events: {
+				'enter': function() {
+					this.attr({
+						'transform': function(d, i) {
+								return 'translate(' + xScale(i)  +', 0)';
+							}
+					});
+					this.select('rect')
+						.attr({
+							'x': 0,
+							'y': 0,
+							'height': buttonHeight,
+							'width': buttonWidth,
+							'rx': 15,
+							'ry': 15,
+						})
+						.style({
+							'fill': '#fff',
+							'stroke': '#000'
+						});
+					this.select('text')
+						.text(function(d) {
+							return d[0];
+						})
+						.attr({
+							'x': buttonWidth / 2,
+							'y': buttonHeight / 2 + yOffset
+						})
+						.style({
+							'font-size': '14px',
+							'text-anchor': 'middle',
+							'font-family': 'Open Sans, sans-serif'
+						});
+					return this;
+				},
+				'merge': function() {
+					return this;
+				}
+			}
+		});
+
+		var xScale = function(i) {
+			return i * (buttonWidth + padding);
 		};
 	}
 });
@@ -184,10 +262,19 @@ var svg = d3.select('#gameBoard')
 	});
 
 var chart = svg.chart('gameBoard');
-var cardsChart = svg.append('g').attr('transform', 'translate(0,250)').chart('cards');
+var cardsChart = svg.append('g').attr('transform', 'translate(0, 250)').chart('cards');
+var buttons = svg.append('g').attr('transform', 'translate(0, 500)').chart('buttons');
 
 chart.draw([1, 18]);
 cardsChart.draw([2,4,1,5,1]);
+buttons.draw([
+	['Move', 'move'],
+	['Block', 'block'],
+	['Retreat', 'retreat'],
+	['Attack', 'attack'],
+	['Dashing Strike', 'dashingStrike'],
+	['Push', 'push']
+]);
 
 setTimeout(function() {
 	chart.draw([6, 18]);
