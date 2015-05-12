@@ -86,6 +86,7 @@ d3.chart('cards', {
 		var cardHeightRatio = 1.4;
 		var cardWidth = (boardWidth - (numberOfCards - 1) * padding) / numberOfCards;
 		var cardHeight = cardWidth * cardHeightRatio;
+		var selectedCards = [];
 
 		this.layer('cards', cardGroup, {
 			dataBind: function(data) {
@@ -93,7 +94,8 @@ d3.chart('cards', {
 				.data(data);
 			},
 			insert: function() {
-				var card = this.append('g');
+				var card = this.append('g')
+					.on('click', selectCard);
 				card.append('rect');
 				card.append('text').classed('leftNumber', true);
 				card.append('text').classed('centerNumber', true);
@@ -171,6 +173,22 @@ d3.chart('cards', {
 				}
 			}
 		});
+
+		var selectCard = function(d, i) {
+			var strokeColor;
+			var cardIndex = selectedCards.indexOf(i);
+
+			if (cardIndex >= 0) {
+				strokeColor = 'black';
+				selectedCards.splice(cardIndex, 1);
+			} else {
+				strokeColor = 'blue';
+				selectedCards.push(i);
+			}
+
+			d3.select(this).select('rect')
+				.style('stroke', strokeColor);
+		};
 
 		var xScale = function(i) {
 			return i * (cardWidth + padding);
