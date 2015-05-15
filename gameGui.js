@@ -95,7 +95,8 @@ d3.chart('cards', {
 			},
 			insert: function() {
 				var card = this.append('g')
-					.on('click', selectCard);
+					.on('click', selectCard)
+					.style('cursor', 'pointer');
 				card.append('rect');
 				card.append('text').classed('leftNumber', true);
 				card.append('text').classed('centerNumber', true);
@@ -201,6 +202,7 @@ d3.chart('buttons', {
 		'use strict';
 		var _Chart = this;
 
+		var selectedButton;
 		var buttonsGroup = this.base.append('g').classed('buttonsGroup', true)
 				.attr('transform', 'translate(1, 1)');
 		var buttonHeight = 50;
@@ -219,7 +221,9 @@ d3.chart('buttons', {
 				.data(data);
 			},
 			insert: function() {
-				var group = this.append('g');
+				var group = this.append('g')
+					.on('click', selectButton)
+					.style('cursor', 'pointer');
 				group.append('rect');
 				group.append('text');
 
@@ -231,7 +235,7 @@ d3.chart('buttons', {
 						'transform': function(d, i) {
 								return 'translate(' + xScale(i)  +', 0)';
 							}
-					});
+						});
 					this.select('rect')
 						.attr({
 							'x': 0,
@@ -265,6 +269,17 @@ d3.chart('buttons', {
 				}
 			}
 		});
+
+		var selectButton = function(d, i) {
+			var strokeColor = 'blue';
+			selectedButton = i;
+
+			d3.select(this.parentElement).selectAll('rect')
+				.style('stroke', 'black');
+
+			d3.select(this).select('rect')
+				.style('stroke', strokeColor);
+		};
 
 		var xScale = function(i) {
 			return i * (buttonWidth + padding);
